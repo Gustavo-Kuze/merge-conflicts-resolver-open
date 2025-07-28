@@ -2,6 +2,12 @@
 
 This project provides utility scripts to automate the resolution of merge conflicts during Git rebase operations. It uses a simplified three-repository approach to handle conflicts efficiently. Built with Deno and TypeScript for modern JavaScript runtime and type safety.
 
+----
+
+PT-BR README: [README_PT-BR.md](README_PT-BR.md)
+
+----
+
 ## Overview
 
 The Conflicts Resolver uses a three-repository approach to handle merge conflicts efficiently:
