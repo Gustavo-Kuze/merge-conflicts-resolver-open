@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "imports": {
+    "std/": "https://deno.land/std@0.208.0/"
+  },
+  "tasks": {
+    "prepare": "deno run --allow-read --allow-write --allow-run prepare-conflicts.ts",
+    "prepare:overwrite": "deno run --allow-read --allow-write --allow-run prepare-conflicts.ts --overwrite",
+    "apply": "deno run --allow-read --allow-write --allow-run apply-resolutions.ts"
+  }
+} 
