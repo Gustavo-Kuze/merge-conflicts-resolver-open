@@ -47,37 +47,33 @@ const main = async (): Promise<void> => {
     await ensureRepoPathExists(rebaseInto);
 
     console.log(`Checking out source branch in rebase-from repo...`);
-    {
-      // Optional: fetch to ensure branch availability
-      await runGitCommand(rebaseFrom, ["fetch", "--all"]);
-      const checkout = await runGitCommand(rebaseFrom, [
-        "checkout",
-        sourceBranch,
-      ]);
-      if (checkout.code !== 0) {
-        console.error(checkout.stderr.trim() || checkout.stdout.trim());
-        throw new Error(
-          `Failed to checkout branch ${sourceBranch} in ${rebaseFrom}`,
-        );
-      }
-      console.log(`✓ rebase-from -> ${sourceBranch}`);
+    // Optional: fetch to ensure branch availability
+    await runGitCommand(rebaseFrom, ["fetch", "--all"]);
+    const checkoutFrom = await runGitCommand(rebaseFrom, [
+      "checkout",
+      sourceBranch,
+    ]);
+    if (checkoutFrom.code !== 0) {
+      console.error(checkoutFrom.stderr.trim() || checkoutFrom.stdout.trim());
+      throw new Error(
+        `Failed to checkout branch ${sourceBranch} in ${rebaseFrom}`,
+      );
     }
+    console.log(`✓ rebase-from -> ${sourceBranch}`);
 
     console.log(`Checking out target branch in rebase-into repo...`);
-    {
-      await runGitCommand(rebaseInto, ["fetch", "--all"]);
-      const checkout = await runGitCommand(rebaseInto, [
-        "checkout",
-        targetBranch,
-      ]);
-      if (checkout.code !== 0) {
-        console.error(checkout.stderr.trim() || checkout.stdout.trim());
-        throw new Error(
-          `Failed to checkout branch ${targetBranch} in ${rebaseInto}`,
-        );
-      }
-      console.log(`✓ rebase-into -> ${targetBranch}`);
+    await runGitCommand(rebaseInto, ["fetch", "--all"]);
+    const checkoutInto = await runGitCommand(rebaseInto, [
+      "checkout",
+      targetBranch,
+    ]);
+    if (checkoutInto.code !== 0) {
+      console.error(checkoutInto.stderr.trim() || checkoutInto.stdout.trim());
+      throw new Error(
+        `Failed to checkout branch ${targetBranch} in ${rebaseInto}`,
+      );
     }
+    console.log(`✓ rebase-into -> ${targetBranch}`);
 
     console.log("\n✅ Branches checked out successfully.");
   } catch (error) {
