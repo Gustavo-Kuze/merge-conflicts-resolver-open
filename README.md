@@ -47,9 +47,10 @@ All repository paths are configured in a single `config.json` file:
 ### Conflict Resolution Process
 
 1. **Conflict Occurs**: During a rebase operation, Git encounters merge conflicts
-2. **Prepare Conflicts**: Run `deno task prepare` to copy conflicted files from the source branch to the target branch repository (existing files are protected by default)
-3. **Resolve Conflicts**: Manually resolve the conflicts in the "rebase-into" repository
-4. **Apply Resolutions**: Run `deno task apply` to copy the resolved files directly to the original project
+2. **Checkout Branches**: Run `deno task checkout-branches` to ensure `rebase-from` and `rebase-into` are on the configured branches
+3. **Prepare Conflicts**: Run `deno task prepare` to copy conflicted files from the source branch to the target branch repository (existing files are protected by default)
+4. **Resolve Conflicts**: Manually resolve the conflicts in the "rebase-into" repository
+5. **Apply Resolutions**: Run `deno task apply` to copy the resolved files directly to the original project
 
 ## Usage Example
 
@@ -58,8 +59,11 @@ All repository paths are configured in a single `config.json` file:
    git rebase feature-branch
    ```
 
-2. **When conflicts occur**, prepare the conflicts:
+2. **When conflicts occur**, first checkout the branches and then prepare the conflicts:
    ```bash
+   # Ensure the repos are on the configured branches
+   deno task checkout-branches
+
    # Safe mode (default) - protects existing files
    deno task prepare
    

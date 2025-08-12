@@ -9,6 +9,7 @@
   "tasks": {
     "prepare": "deno run --allow-read --allow-write --allow-run prepare-conflicts.ts",
     "prepare:overwrite": "deno run --allow-read --allow-write --allow-run prepare-conflicts.ts --overwrite",
-    "apply": "deno run --allow-read --allow-write --allow-run apply-resolutions.ts"
+    "apply": "deno run --allow-read --allow-write --allow-run apply-resolutions.ts",
+    "checkout-branches": "deno run --allow-read --allow-run checkout-branches.ts"
   }
 } 

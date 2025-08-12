@@ -43,9 +43,10 @@ Todos os caminhos dos repositórios são configurados em um único arquivo `conf
 ### Processo de Resolução de Conflitos
 
 1. **Conflito Ocorre**: Durante uma operação de rebase, o Git encontra conflitos de merge
-2. **Preparar Conflitos**: Execute `deno task prepare` para copiar arquivos conflitantes da branch de origem para o repositório da branch de destino (arquivos existentes são protegidos por padrão)
-3. **Resolver Conflitos**: Resolva manualmente os conflitos no repositório "rebase-into"
-4. **Aplicar Resoluções**: Execute `deno task apply` para copiar os arquivos resolvidos diretamente para o projeto original
+2. **Fazer checkout das branches**: Execute `deno task checkout-branches` para garantir que `rebase-from` e `rebase-into` estejam nas branches configuradas
+3. **Preparar Conflitos**: Execute `deno task prepare` para copiar arquivos conflitantes da branch de origem para o repositório da branch de destino (arquivos existentes são protegidos por padrão)
+4. **Resolver Conflitos**: Resolva manualmente os conflitos no repositório "rebase-into"
+5. **Aplicar Resoluções**: Execute `deno task apply` para copiar os arquivos resolvidos diretamente para o projeto original
 
 ## Exemplo de Uso
 
@@ -54,8 +55,11 @@ Todos os caminhos dos repositórios são configurados em um único arquivo `conf
    git rebase feature-branch
    ```
 
-2. **Quando conflitos ocorrerem**, prepare os conflitos:
+2. **Quando conflitos ocorrerem**, primeiro faça checkout das branches e depois prepare os conflitos:
    ```bash
+   # Garanta que os repositórios estão nas branches configuradas
+   deno task checkout-branches
+
    # Modo seguro (padrão) - protege arquivos existentes
    deno task prepare
    

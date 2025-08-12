@@ -1,5 +1,7 @@
 {
-    "originalProject": "/Users/yourUsername/Desktop/git/original-project",
-    "rebaseFrom": "/Users/yourUsername/Desktop/git/rebase-from",
-    "rebaseInto": "/Users/yourUsername/Desktop/git/rebase-into"
+  "originalProject": "/Users/yourUsername/Desktop/git/original-project",
+  "rebaseFrom": "/Users/yourUsername/Desktop/git/rebase-from",
+  "rebaseInto": "/Users/yourUsername/Desktop/git/rebase-into",
+  "sourceBranch": "main",
+  "targetBranch": "main"
 }
