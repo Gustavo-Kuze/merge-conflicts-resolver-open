@@ -8,6 +8,8 @@ interface Config {
   targetBranch: string;
 }
 
+const TEMP_BRANCH = 'merge-conflicts-resolver-temp';
+
 const runGitCommand = async (
   repoPath: string,
   args: string[],
@@ -49,30 +51,72 @@ const main = async (): Promise<void> => {
     console.log(`Checking out source branch in rebase-from repo...`);
     // Optional: fetch to ensure branch availability
     await runGitCommand(rebaseFrom, ["fetch", "--all"]);
+
+    await runGitCommand(rebaseFrom, [
+      "checkout",
+      "-b",
+      TEMP_BRANCH,
+    ]);
+
+    await runGitCommand(rebaseFrom, [
+      "branch",
+      "-D",
+      sourceBranch,
+    ]);
+
     const checkoutFrom = await runGitCommand(rebaseFrom, [
       "checkout",
       sourceBranch,
     ]);
+
     if (checkoutFrom.code !== 0) {
       console.error(checkoutFrom.stderr.trim() || checkoutFrom.stdout.trim());
       throw new Error(
         `Failed to checkout branch ${sourceBranch} in ${rebaseFrom}`,
       );
     }
+
+    await runGitCommand(rebaseFrom, [
+      "branch",
+      "-D",
+      TEMP_BRANCH,
+    ]);
+
     console.log(`✓ rebase-from -> ${sourceBranch}`);
 
     console.log(`Checking out target branch in rebase-into repo...`);
     await runGitCommand(rebaseInto, ["fetch", "--all"]);
+
+    await runGitCommand(rebaseInto, [
+      "checkout",
+      "-b",
+      TEMP_BRANCH,
+    ]);
+
+    await runGitCommand(rebaseInto, [
+      "branch",
+      "-D",
+      targetBranch,
+    ]);
+
     const checkoutInto = await runGitCommand(rebaseInto, [
       "checkout",
       targetBranch,
     ]);
+
     if (checkoutInto.code !== 0) {
       console.error(checkoutInto.stderr.trim() || checkoutInto.stdout.trim());
       throw new Error(
         `Failed to checkout branch ${targetBranch} in ${rebaseInto}`,
       );
     }
+
+    await runGitCommand(rebaseInto, [
+      "branch",
+      "-D",
+      TEMP_BRANCH,
+    ]);
+
     console.log(`✓ rebase-into -> ${targetBranch}`);
 
     console.log("\n✅ Branches checked out successfully.");
