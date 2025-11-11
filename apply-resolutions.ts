@@ -11,10 +11,10 @@ const getGitConflicts = async (repoPath: string): Promise<string[]> => {
     args: ["status", "--porcelain"],
     cwd: repoPath,
   });
-  
+
   const { stdout } = await command.output();
   const output = new TextDecoder().decode(stdout);
-  
+
   const conflictStatusCodes = ['UU', 'AA', 'AU', 'UA', 'DU', 'UD', 'DD'];
   return output
     .split('\n')
@@ -24,7 +24,7 @@ const getGitConflicts = async (repoPath: string): Promise<string[]> => {
     .filter(Boolean);
 };
 
-const main = async (): Promise<void> => {
+export const applyResolutions = async (): Promise<void> => {
   try {
     // Read configuration
     const configPath = join(Deno.cwd(), 'config.json');
@@ -54,7 +54,7 @@ const main = async (): Promise<void> => {
           // Ensure target directory exists
           const toDir = join(toFile, '..');
           await Deno.mkdir(toDir, { recursive: true });
-          
+
           await Deno.copyFile(fromFile, toFile);
           console.log(`✓ Applied: ${conflictFile}`);
         }
@@ -73,6 +73,10 @@ const main = async (): Promise<void> => {
     console.error('Error:', error instanceof Error ? error.message : String(error));
     Deno.exit(1);
   }
+};
+
+const main = async (): Promise<void> => {
+  return await applyResolutions();
 };
 
 if (import.meta.main) {
